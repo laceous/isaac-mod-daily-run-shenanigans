@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+    <name>Daily Run Shenanigans</name>
+    <directory>daily run shenanigans</directory>
+    <id>3648293931</id>
+    <description>This is a companion mod to [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3257282571]New Run Shenanigans[/url]. Press the tilde key to open the new debug console and menu. There's a new Shenanigans option that will let you practice the daily run for any day.
+
+The actual R+ daily on 1.9.7.15 seems to generate differently than the RGON+ version on 1.9.7.12 (different seeds), but you can still use this to play around with the curated daily runs. Note: enabled mods can also change how things generate.
+
+Curated daily runs are listed [url=https://bindingofisaacrebirth.wiki.gg/wiki/List_of_curated_daily_challenges]here[/url]. Hint: play as Guppy on Jan 14 and as Satoru Iwata on Dec 6, or get fireworks on July 4.
+
+REPENTOGON is required.</description>
+    <version>1.1</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Tweaks"/>
+</metadata>
