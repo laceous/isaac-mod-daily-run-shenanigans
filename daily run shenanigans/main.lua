@@ -174,7 +174,7 @@ if REPENTOGON then
         ImGui.PushNotification(s, ImGuiNotificationType.INFO, 5000)
         print(s .. '\n--------------------')
       else
-        ImGui.PushNotification('Start a daily challenge to get its info.', ImGuiNotificationType.ERROR, 5000)
+        ImGui.PushNotification('Start a daily run to get its info.', ImGuiNotificationType.ERROR, 5000)
       end
     end, false)
   end
