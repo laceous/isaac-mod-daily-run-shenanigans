@@ -2,8 +2,6 @@ local mod = RegisterMod('Daily Run Shenanigans', 1)
 local game = Game()
 
 if REPENTOGON then
-  mod.dailyDate = nil
-  mod.restart = false
   mod.controllerOverride = -1
   mod.controllers = {}
   mod.controllersMap = {}
@@ -15,36 +13,7 @@ if REPENTOGON then
   -- reset variables here rather than in MC_PRE_GAME_EXIT
   -- so we don't wipe out the controller override when holding R to restart
   function mod:onMainMenuRender()
-    mod.dailyDate = nil
-    mod.restart = false
     mod.controllerOverride = -1
-  end
-  
-  function mod:onGameStart()
-    if mod.dailyDate then
-      -- calling StartDailyGame from here fixes too many jacob/esau's spawning
-      -- don't get stuck in an infinite loop
-      local dailyDate = mod.dailyDate
-      mod.dailyDate = nil
-      Isaac.StartDailyGame(dailyDate) -- sets stage 2
-      
-      if not game:IsGreedMode() then
-        -- show isaac's bedroom instead of showing a split-second of stage 2
-        Isaac.ExecuteCommand('stage 13') -- goto s.isaacs
-      end
-    end
-  end
-  
-  -- StartNewGame + StartDailyGame puts you into the 2nd stage
-  -- restart back to stage 1
-  -- restart doesn't work from the game start callback
-  -- you can use the stage command more transparently from game start, but i was running into issues
-  -- either too many jacob/esau's spawn or we don't know the correct starting stage depending on when the functions are called
-  function mod:onUpdate()
-    if mod.restart then
-      mod.restart = false
-      Isaac.ExecuteCommand('restart')
-    end
   end
   
   function mod:onPlayerInit(player)
@@ -148,13 +117,8 @@ if REPENTOGON then
         return
       end
       
-      -- StartDailyGame appears to kickoff some things, but you never leave the menu
-      -- StartNewGame is needed to actually get us into gameplay
-      -- there's issues, but we fix those later
-      Isaac.StartNewGame(PlayerType.PLAYER_ISAAC, Challenge.CHALLENGE_NULL, Difficulty.DIFFICULTY_NORMAL, nil)
-      mod.dailyDate = tonumber(string.format('%04d%02d%02d', year, month, day))
+      Isaac.StartDailyGame(tonumber(string.format('%04d%02d%02d', year, month, day)))
       mod.controllerOverride = mod.controllersMap[controller + 1] or -1
-      mod.restart = true
       ImGui.Hide()
     end, false)
     ImGui.AddElement('shenanigansWindowDailyRun', '', ImGuiElement.SameLine, '')
@@ -182,7 +146,5 @@ if REPENTOGON then
   mod:setupImGuiMenu()
   mod:AddCallback(ModCallbacks.MC_POST_MODS_LOADED, mod.onModsLoaded)
   mod:AddCallback(ModCallbacks.MC_MAIN_MENU_RENDER, mod.onMainMenuRender)
-  mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, mod.onGameStart)
-  mod:AddCallback(ModCallbacks.MC_POST_UPDATE, mod.onUpdate)
   mod:AddPriorityCallback(ModCallbacks.MC_POST_PLAYER_INIT, CallbackPriority.IMPORTANT, mod.onPlayerInit, PlayerVariant.PLAYER)
 end
